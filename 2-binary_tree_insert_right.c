@@ -1,39 +1,35 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_insert_right - Inserts a node as the right-child
- *                            of a given parent node in a binary tree.
- * @parent: Pointer to the parent node where the right-child will be inserted.
- * @value: The value to store in the new node.
+ * binary_tree_insert_right - Inserts a node as the right child
+ *                            of another node in a binary tree.
+ * @parent: A pointer to the node where the right child will be inserted.
+ * @value: The value to store in the newly created node.
  *
- * Return: Pointer to the newly created node, or NULL on failure.
+ * Return: If parent is NULL or an error occurs, returns NULL.
+ *         Otherwise, returns a pointer to the newly created node.
  *
- * Description: If the parent node already has a right-child, the new node
- *              takes its place, and the old right-child becomes the
- *              right-child of the new node.
+ * Description: If the parent node already has a right child, the new node
+ *              replaces it, and the existing right child becomes the
+ *              right child of the new node.
  */
 binary_tree_t *binary_tree_insert_right(binary_tree_t *parent, int value)
 {
-    /* Ensure the parent node is not NULL */
-    if (!parent)
-        return (NULL);
+	binary_tree_t *new;
 
-    /* Allocate memory and initialize the new node */
-    binary_tree_t *new_node = binary_tree_node(parent, value);
+	if (parent == NULL)
+		return (NULL);
 
-    /* Check if memory allocation was successful */
-    if (!new_node)
-        return (NULL);
+	new = binary_tree_node(parent, value);
+	if (new == NULL)
+		return (NULL);
 
-    /* If the parent already has a right child, adjust the pointers */
-    if (parent->right)
-    {
-        new_node->right = parent->right;
-        parent->right->parent = new_node;
-    }
+	if (parent->right != NULL)
+	{
+		new->right = parent->right;
+		parent->right->parent = new;
+	}
+	parent->right = new;
 
-    /* Assign the new node as the right child of the parent */
-    parent->right = new_node;
-
-    return (new_node);
+	return (new);
 }
